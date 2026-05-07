@@ -5,6 +5,7 @@ import userRoute from "./routes/userRoute.js";
 import productRoute from "./routes/productRoute.js";
 import authentication from "./middleware/authentication.js";
 import authorization from "./middleware/authorization.js";
+import reviewRoute from "./routes/reviewRoute.js";
 
 
 const app = express();
@@ -17,6 +18,9 @@ await connectToDatabase();
 app.use("/api/users", userRoute);
 // Use the product route
 app.use("/api/products",authentication, authorization("admin"), productRoute);
+// Use the review route
+app.use("/api/reviews",authentication, reviewRoute);
+
 
 app.listen(3000,()=>{
     console.log("Server is running on port 3000 http://localhost:3000");

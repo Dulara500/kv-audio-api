@@ -30,6 +30,7 @@ export async function loginUser(email,password){
 
     let token = jwt.sign({
         id : user._id,
+        name: user.firstName + " " + user.lastName,
         email : user.email,
         role : user.role
     },process.env.token_secret,{
