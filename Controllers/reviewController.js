@@ -1,6 +1,6 @@
 import Review from "../models/reviews.js";
 
-export async function addReview(data){
+export function addReview(data){
     let review = new Review(data);
     return review.save();
 }
@@ -20,10 +20,10 @@ export async function deleteReview(user,paramEmail){
     throw new Error("Unauthorized");
 }
 
-export async function approveReview(userRole, email){
-    if(userRole !== "admin"){
-        throw new Error("Unauthorized");
-    }
+export function approveReview(userRole, email){
+    // if(userRole !== "admin"){
+    //     throw new Error("Unauthorized");
+    // }
     return Review.findOneAndUpdate({email},{$set:{isApproved:true}},{new:true});
 }
 

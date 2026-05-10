@@ -6,6 +6,7 @@ import productRoute from "./routes/productRoute.js";
 import authentication from "./middleware/authentication.js";
 import authorization from "./middleware/authorization.js";
 import reviewRoute from "./routes/reviewRoute.js";
+import inquiryRorte from "./routes/inquiryRoute.js";
 
 
 const app = express();
@@ -17,9 +18,11 @@ await connectToDatabase();
 // Use the user route
 app.use("/api/users", userRoute);
 // Use the product route
-app.use("/api/products",authentication, authorization("admin"), productRoute);
+app.use("/api/products", productRoute);
 // Use the review route
-app.use("/api/reviews",authentication, reviewRoute);
+app.use("/api/reviews", reviewRoute);
+
+app.use("/api/inquiry",inquiryRorte);
 
 
 app.listen(3000,()=>{

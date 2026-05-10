@@ -1,10 +1,25 @@
+import authentication from "../middleware/authentication.js";
 import Product from "../models/product.js";
 
-export async function getProducts() {
+export function getProducts(user){
+    if(user==null || user.role!=="admin"){
+        return Product.find({availability:true});
+    }
     return Product.find();
 };
 
-export async function createProduct(data) {
-    let product = new Product(data);
-    return product.save();
+export function createProduct(data){
+    if(data.user.role === "admin"){
+        let product = new Product(data.body);
+        return product.save();
+    }
+    throw new Error("Unauthorized");
 };
+
+export function upadateProduct(key,data){
+        return Product.updateOne({key},{$set:{...data}});
+}
+
+export function deleteProduct(key){
+    return Product.deleteOne({key});
+}

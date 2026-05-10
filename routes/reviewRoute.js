@@ -1,4 +1,6 @@
 import { addReview, getReviews, deleteReview, approveReview} from "../Controllers/reviewController.js";
+import authentication from "../middleware/authentication.js";
+import authorization from "../middleware/authorization.js";
 import express from "express";
 let reviewRoute = express.Router();
 
@@ -32,7 +34,7 @@ reviewRoute.get('/',async (req,res)=>{
 
 
 
-reviewRoute.put("/approve/:email",async (req,res)=>{
+reviewRoute.put("/approve/:email",authorization("admin"),async (req,res)=>{
     try{
         const updatedReview = await approveReview(req.user.role, req.params.email);
         if(!updatedReview){
@@ -45,11 +47,11 @@ reviewRoute.put("/approve/:email",async (req,res)=>{
             "review": updatedReview
         });
     }catch(err){
-        if(err.message === "Unauthorized"){
-            return res.status(403).json({
-                "message":"Only admin can approve reviews"
-            })
-        }
+        // if(err.message === "Unauthorized"){
+        //     return res.status(403).json({
+        //         "message":"Only admin can approve reviews"
+        //     })
+        // }
         console.error(err);
         res.status(500).json({
             "message": "error while approving review "

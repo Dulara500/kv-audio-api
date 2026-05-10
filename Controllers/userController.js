@@ -5,11 +5,11 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export async function getUsers(){
+export function getUsers(){
     return User.find();
 }
 
-export async function registerUser(data){
+export function registerUser(data){
         let user = new User(data);
         user.password = bcrypt.hashSync(user.password,10);
         return user.save();
@@ -32,7 +32,8 @@ export async function loginUser(email,password){
         id : user._id,
         name: user.firstName + " " + user.lastName,
         email : user.email,
-        role : user.role
+        role : user.role,
+        phone : user.phone
     },process.env.token_secret,{
         expiresIn : "1h"
     })
