@@ -26,6 +26,9 @@ app.use("/api/reviews", reviewRoute);
 
 app.use("/api/inquiry",inquiryRorte);
 
+app.get("/", (req, res) => {
+    res.send("Server is running");
+});
 
 app.listen(3000,()=>{
     console.log("Server is running on port 3000 http://localhost:3000");
