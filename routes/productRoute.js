@@ -1,4 +1,4 @@
-import { getProducts,createProduct,upadateProduct,deleteProduct } from "../Controllers/productController.js";
+import { getProducts,createProduct,upadateProduct,deleteProduct,findProduct } from "../Controllers/productController.js";
 import authentication from "../middleware/authentication.js";
 import authorization from "../middleware/authorization.js";
 import optionalAuth from "../middleware/optionalAuth.js";
@@ -18,17 +18,7 @@ productRoute.get('/',optionalAuth, async (req,res)=>{
     }
 });
 
-productRoute.get('/:key',optionalAuth, async (req,res)=>{
-    try{
-        let product = await findProduct(req.params.key);
-        res.json(product);
-    }catch(err){
-        console.error(err);
-        res.status(500).json({
-            "message" : "error while fetching product"
-        })
-    }
-})
+
 
 productRoute.post('/',authentication, async (req,res)=>{
     try{
@@ -55,6 +45,19 @@ productRoute.delete('/delete/:key',authentication,authorization("admin"), async 
         })
     }
 });
+
+productRoute.get('/:key',optionalAuth, async (req,res)=>{
+    try{
+        let product = await findProduct(req.params.key);
+        console.log(product)
+        res.json(product);
+    }catch(err){
+        console.error(err);
+        res.status(500).json({
+            "message" : "error while fetching product"
+        })
+    }
+})
 
 productRoute.put('/:key',authentication,authorization("admin"), async (req,res)=>{
     try{
