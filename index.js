@@ -7,9 +7,9 @@ import authentication from "./middleware/authentication.js";
 import authorization from "./middleware/authorization.js";
 import reviewRoute from "./routes/reviewRoute.js";
 import inquiryRorte from "./routes/inquiryRoute.js";
+import orderRoute from "./routes/orderRoute.js";
 import cors from "cors";
 import dotenv from "dotenv";
-
 
 const app = express();
 app.use(express.json());
@@ -26,7 +26,9 @@ app.use("/api/products", productRoute);
 // Use the review route
 app.use("/api/reviews", reviewRoute);
 
-app.use("/api/inquiry",inquiryRorte);
+app.use("/api/inquiry",inquiryRorte); 
+
+app.use("/api/order",orderRoute)
 
 app.get("/", (req, res) => {
     res.send("Server is running");
