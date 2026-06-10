@@ -41,3 +41,8 @@ export async function loginUser(email,password){
     })
     return {token:token,user:user};
 }
+
+export async function blockAndUnblockUser(email,status){
+    const user = await User.findOneAndUpdate({email},{$set:{isBlocked:!status}});
+    return user;
+}

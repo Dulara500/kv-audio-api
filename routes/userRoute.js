@@ -1,5 +1,5 @@
 import express from "express";
-import { getUsers,registerUser,loginUser } from "../Controllers/userController.js";
+import { getUsers,registerUser,loginUser,blockAndUnblockUser } from "../Controllers/userController.js";
 import authentication from "../middleware/authentication.js";
 import authorization from "../middleware/authorization.js";
 let userRoute = express.Router();
@@ -49,4 +49,20 @@ userRoute.post('/login',async (req,res)=>{
         });
     }
 });
+
+userRoute.put('/:key',authentication,authorization("admin"),async (req,res)=>{
+    try{
+        let result = await blockAndUnblockUser(req.params.key,req.body.status);
+        res.json({
+            "message" : "User blocked and unblocked successfully",
+            "user" : result
+        })
+    }catch(err){
+        res.status(500).json({
+            "message" : "error while blocking and unblocking user"
+        });
+    }
+});
+
+
 export default userRoute;
