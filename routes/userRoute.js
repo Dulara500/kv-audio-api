@@ -1,9 +1,10 @@
 import express from "express";
 import { getUsers,registerUser,loginUser } from "../Controllers/userController.js";
-
+import authentication from "../middleware/authentication.js";
+import authorization from "../middleware/authorization.js";
 let userRoute = express.Router();
 
-userRoute.get('/',async (req,res)=>{
+userRoute.get('/',authentication,authorization("admin"),async (req,res)=>{
     try{
         let users =await getUsers();
         res.json(users);
