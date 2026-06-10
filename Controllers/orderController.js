@@ -63,3 +63,12 @@ export async function createOrder(req){
     }
     
 }
+
+export async function getOrder(){
+    try{
+        const orders = await Order.find();
+        return orders;
+    }catch(e){
+        throw new Error("Failed to Get Order")
+    }
+}
