@@ -1,4 +1,3 @@
-
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -11,9 +10,9 @@ export function getUsers(){
 }
 
 export function registerUser(data){
-        let user = new User(data);
-        user.password = bcrypt.hashSync(user.password,10);
-        return user.save();
+    let user = new User(data);
+    user.password = bcrypt.hashSync(user.password,10);
+    return user.save();
 }
 
 export async function loginUser(email,password){
@@ -43,6 +42,6 @@ export async function loginUser(email,password){
 }
 
 export async function blockAndUnblockUser(email,status){
-    const user = await User.findOneAndUpdate({email},{$set:{isBlocked:!status}});
+    const user = await User.findOneAndUpdate({email},{$set:{isBlocked:status}},{new:true});
     return user;
 }
