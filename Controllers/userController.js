@@ -16,36 +16,40 @@ export function registerUser(data){
 }
 
 export async function loginUser(email,password){
-    let user = await User.findOne({email});
-    console.log("user",user);
+    try{
+        let user = await User.findOne({email});
+        if(!user){
+            return null;
+        }
+    
+        if(user.isBlocked){
+            throw new Error("You are blocked from accessing the application");
+        }
+    
+    
+    
+        let isPasswordValid = await bcrypt.compare(password,user.password);
+    
+        if(!isPasswordValid){
+            return null;
+        }
+    
+    
+    
+        let token = jwt.sign({
+            id : user._id,
+            name: user.firstName + " " + user.lastName,
+            email : user.email,
+            role : user.role,
+            phone : user.phone
+        },process.env.token_secret,{
+            expiresIn : "24h"
+        })
+        return {token:token,user:user};
 
-    if(user.isBlocked){
-        throw new Error("You are blocked from accessing the application");
+    }catch(err){
+        throw err instanceof Error ? err : new Error("error while logging in");
     }
-
-    if(!user){
-        return null;
-    }
-
-
-    let isPasswordValid = await bcrypt.compare(password,user.password);
-
-    if(!isPasswordValid){
-        return null;
-    }
-
-
-
-    let token = jwt.sign({
-        id : user._id,
-        name: user.firstName + " " + user.lastName,
-        email : user.email,
-        role : user.role,
-        phone : user.phone
-    },process.env.token_secret,{
-        expiresIn : "24h"
-    })
-    return {token:token,user:user};
 }
 
 export async function blockAndUnblockUser(email,status){

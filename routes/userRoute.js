@@ -24,7 +24,7 @@ userRoute.post('/',async (req,res)=>{
         })
     }catch(err){
         res.status(500).json({
-            "message" : err || "error while saving user"
+            "message" : err.message || "error while saving user"
         })
     }
 }); 
@@ -44,8 +44,11 @@ userRoute.post('/login',async (req,res)=>{
             })
         }
     }catch(err){
+        if(err.message === "You are blocked from accessing the application"){
+            return res.status(403).json({ "message": err.message });
+        }
         res.status(500).json({
-            "message" : err || "error while logging in"
+            "message" : err.message || "error while logging in"
         });
     }
 });
@@ -59,7 +62,7 @@ userRoute.put('/:key',authentication,authorization("admin"),async (req,res)=>{
         })
     }catch(err){
         res.status(500).json({
-            "message" : err || "error while blocking and unblocking user"
+            "message" : err.message || "error while blocking and unblocking user"
         });
     }
 });
