@@ -43,7 +43,7 @@ export async function loginUser(email,password){
             role : user.role,
             phone : user.phone
         },process.env.token_secret,{
-            expiresIn : "24h"
+            expiresIn : "12h"
         })
         return {token:token,user:user};
 

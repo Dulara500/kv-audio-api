@@ -10,6 +10,7 @@ import inquiryRorte from "./routes/inquiryRoute.js";
 import orderRoute from "./routes/orderRoute.js";
 import cors from "cors";
 import dotenv from "dotenv";
+import messageRouter from "./routes/messageRoute.js";
 
 const app = express();
 app.use(express.json());
@@ -30,9 +31,13 @@ app.use("/api/inquiry",inquiryRorte);
 
 app.use("/api/order",orderRoute)
 
+app.use("/api/message",messageRouter)
+
 app.get("/", (req, res) => {
     res.send("Server is running");
 });
+
+
 
 const PORT = process.env.PORT || 3000;
 

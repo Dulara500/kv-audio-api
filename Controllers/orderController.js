@@ -43,7 +43,7 @@ export async function createOrder(req){
             
         }catch(e){
             console.log(e)
-            throw new Error("Failed to create order")
+            throw new Error("Failed to create order"+e)
         }
     }
 
