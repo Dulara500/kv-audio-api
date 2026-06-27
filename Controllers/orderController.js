@@ -51,6 +51,8 @@ export async function createOrder(req){
     orderInfo.startingDate = data.startingDate;
     orderInfo.endingDate = data.endingDate;
     orderInfo.totalAmount = oneDayCost * data.days;
+    orderInfo.shippingAddress = data.shippingAddress;
+    orderInfo.paymentMethod = data.paymentMethod;
 
     console.log(orderInfo)
 
