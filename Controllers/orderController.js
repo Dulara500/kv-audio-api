@@ -84,3 +84,21 @@ export async function getCustomerOrders(email){
         throw new Error("Failed to Get Customer Orders")
     }
 }
+
+export async function cancelOrder(orderId, email){
+    const order = await Order.findOne({orderId, email});
+    if(!order){
+        throw new Error("Order not found");
+    }
+    if(order.status !== "pending"){
+        throw new Error("Only pending orders can be cancelled. If already paied contact the admin");
+    }
+    const FIFTEEN_MIN_MS = 15 * 60 * 1000;
+    const elapsed = Date.now() - new Date(order.orderDate).getTime();
+    if(elapsed > FIFTEEN_MIN_MS){
+        throw new Error("Cancellation window has expired (15 minutes)");
+    }
+    order.status = "cancelled";
+    const updated = await order.save();
+    return updated;
+}
